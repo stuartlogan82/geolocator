@@ -1,13 +1,15 @@
 import os
-from flask import Flask
+from flask import Flask, render_template
 
 app = Flask(__name__)
 app.config.from_object(os.environ['APP_SETTINGS'])
 
+google_maps_api_key = os.environ.get('GOOGLE_MAPS_API_KEY')
 
-@app.route('/')
-def hello():
-    return "Hello World!"
+
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    return render_template('index.html', googleMapsApiKey=google_maps_api_key)
 
 
 @app.route('/<number>')
