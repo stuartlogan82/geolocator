@@ -9,7 +9,7 @@ app.config.from_object(os.environ['APP_SETTINGS'])
 GOOGLE_MAPS_API_KEY = os.environ.get('GOOGLE_MAPS_API_KEY')
 TWILIO_SYNC_SERVICE_SID = os.environ.get('TWILIO_SYNC_MAP_SERVICE_SID')
 TWILIO_API_KEY = os.environ.get('TWILIO_API_KEY')
-TWILIO_API_SECRET = os.environ.get('TWILIO_API_SECRET')
+TWILIO_API_SECRET = os.environ.get('TWILIO_API_KEY_SECRET')
 TWILIO_ACCOUNT_SID = os.environ.get('TWILIO_ACCOUNT_SID')
 
 
@@ -18,9 +18,9 @@ def index():
     return render_template('index.html', googleMapsApiKey=GOOGLE_MAPS_API_KEY)
 
 
-@app.route('/<number>')
-def hello_number(number):
-    return "Hello {}!".format(number)
+@app.route('/<number>', methods=['GET', 'POST'])
+def index_number(number):
+    return render_template('index.html', googleMapsApiKey=GOOGLE_MAPS_API_KEY, identity=number)
 
 
 @app.route('/token')
