@@ -1,14 +1,16 @@
 import os
-from flask import Flask, render_template, request, current_app, jsonify
+import json
+from flask import Flask, render_template, request, current_app, jsonify, Response
 from twilio.jwt.access_token import AccessToken
 from twilio.jwt.access_token.grants import SyncGrant
 from twilio.rest import Client
+from twilio.twiml.voice_response import VoiceResponse
 
 app = Flask(__name__)
 app.config.from_object(os.environ['APP_SETTINGS'])
 
 GOOGLE_MAPS_API_KEY = os.environ.get('GOOGLE_MAPS_API_KEY')
-TWILIO_SYNC_SERVICE_SID = os.environ.get('TWILIO_SYNC_MAP_SERVICE_SID')
+TWILIO_SYNC_SERVICE_SID = os.environ.get('TWILIO_SYNC_SERVICE_SID')
 TWILIO_API_KEY = os.environ.get('TWILIO_API_KEY')
 TWILIO_API_SECRET = os.environ.get('TWILIO_API_SECRET')
 TWILIO_ACCOUNT_SID = os.environ.get('TWILIO_ACCOUNT_SID')
@@ -30,14 +32,52 @@ def dequeue():
     print(request.is_json)
     content = request.get_json()
     print(content)
+    # identity = content.get("identity")
     client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+    call_sid = ''
+    members = client.queues(
+        'QU0273e99cff8753d81cc9912099ad0c01').members.list()
 
-    members = client.queues('QUb0d7407f6dc34f3cacc898794c164767').members.list()
+    calls = client.calls.list(status='in-progress')
+
+    for record in calls:
+        if record.from_ == '+{}'.format(content["identity"]):
+            print(record.sid, record.from_)
+            call_sid = record.sid
 
     for record in members:
-        print(record.call_sid)
+        if record.call_sid == call_sid:
+            print("found call!!", record.call_sid)
+            member = client.queues('QU0273e99cff8753d81cc9912099ad0c01') \
+                .members(call_sid) \
+                .update(url='https://2edbfaaf.ngrok.io/enqueue_to_flex'.format(call_sid, content["identity"]), method='GET',)
+            print(member.call_sid)
+            return 'Dequeued succesfully!', 200
 
-    return jsonify('JSON posted'), 200
+    return 'Dequeue failed', 200
+
+
+@app.route('/enqueue_to_flex')
+def enqueue_to_flex():
+    caller = request.args.get('Caller')
+    formatted_caller = caller[1:]
+    print(formatted_caller)
+    location = fetch_sync_data(formatted_caller)
+    print(location)
+    resp = VoiceResponse()
+    enqueue = resp.enqueue(
+        None, workflow_sid='WW753b6e8c074d797802e6e68cc823b74d')
+    enqueue.task(json.dumps(
+        {'type': 'inbound', 'name': caller, 'lat': location['lat'], 'lng': location['lng']}))
+    resp.append(enqueue)
+
+    return str(resp)
+    # task = client.taskrouter.workspaces('WSd1ac4b50ce77788eae40c81c753e4dda').tasks.create(
+    #     attributes=json.dumps({'type': 'inbound', 'name': '+447475737643', 'lat': 51.520128799999995, 'lng': -0.08377989999999999}), workflow_sid='WW753b6e8c074d797802e6e68cc823b74d')
+
+    # print(task.sid)
+    # resp = Response({}, status=200, mimetype='application/json')
+    # return resp
 
 
 @app.route('/token')
@@ -54,6 +94,23 @@ def token():
     token.add_grant(sync_grant)
     # Return token info as JSON
     return jsonify(identity=identity, token=token.to_jwt().decode('utf-8'))
+
+
+def fetch_sync_data(unique_name):
+    client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+    documents = client.sync.services(TWILIO_SYNC_SERVICE_SID) \
+        .documents \
+        .list()
+
+    for record in documents:
+        print(record)
+        if unique_name == record.unique_name:
+            document = client.sync.services(TWILIO_SYNC_SERVICE_SID) \
+                .documents(unique_name) \
+                .fetch()
+            return document.data
+        else:
+            return {'lat': 0, 'lng': 0}
 
 
 if __name__ == '__main__':
