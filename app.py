@@ -17,6 +17,7 @@ TWILIO_ACCOUNT_SID = os.environ.get('TWILIO_ACCOUNT_SID')
 TWILIO_AUTH_TOKEN = os.environ.get('TWILIO_AUTH_TOKEN')
 SERVICE_BASE_URL = os.environ.get('SERVICE_BASE_URL')
 
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     return render_template('index.html', googleMapsApiKey=GOOGLE_MAPS_API_KEY)
@@ -50,7 +51,7 @@ def dequeue():
             print("found call!!", record.call_sid)
             member = client.queues('QU0273e99cff8753d81cc9912099ad0c01') \
                 .members(call_sid) \
-                .update(url='https://https://geolocator-prod.herokuapp.com/enqueue_to_flex', method='GET',)
+                .update(url='https://geolocator-prod.herokuapp.com/enqueue_to_flex', method='GET',)
             print(member.call_sid)
             return jsonify({'message': 'Dequeued succesfully!'}), 200
 
