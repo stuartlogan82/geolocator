@@ -15,7 +15,7 @@ TWILIO_API_KEY = os.environ.get('TWILIO_API_KEY')
 TWILIO_API_SECRET = os.environ.get('TWILIO_API_SECRET')
 TWILIO_ACCOUNT_SID = os.environ.get('TWILIO_ACCOUNT_SID')
 TWILIO_AUTH_TOKEN = os.environ.get('TWILIO_AUTH_TOKEN')
-
+SERVICE_BASE_URL = os.environ.get('SERVICE_BASE_URL')
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -50,7 +50,7 @@ def dequeue():
             print("found call!!", record.call_sid)
             member = client.queues('QU0273e99cff8753d81cc9912099ad0c01') \
                 .members(call_sid) \
-                .update(url='https://geolocator-prod.herokuapp.com/enqueue_to_flex'.format(call_sid, content["identity"]), method='GET',)
+                .update(url='https://{}/enqueue_to_flex'.format(SERVICE_BASE_URL), method='GET',)
             print(member.call_sid)
             return jsonify({'message': 'Dequeued succesfully!'}), 200
 
@@ -72,12 +72,6 @@ def enqueue_to_flex():
     resp.append(enqueue)
 
     return str(resp)
-    # task = client.taskrouter.workspaces('WSd1ac4b50ce77788eae40c81c753e4dda').tasks.create(
-    #     attributes=json.dumps({'type': 'inbound', 'name': '+447475737643', 'lat': 51.520128799999995, 'lng': -0.08377989999999999}), workflow_sid='WW753b6e8c074d797802e6e68cc823b74d')
-
-    # print(task.sid)
-    # resp = Response({}, status=200, mimetype='application/json')
-    # return resp
 
 
 @app.route('/token')
