@@ -135,12 +135,13 @@
         syncClient.document('{{identity}}').then(function (doc) {
           doc.set(pos);
         });
-      });
-      syncClient.document('{{identity}}').then(function (doc) {
-        doc.on('updated', function (data) {
-          console.log('Document updated!', data);
+        syncClient.document('{{identity}}').then(function (doc) {
+          doc.on('updated', function (data) {
+            console.log('Document updated!', data);
+          });
         });
       });
+
     }
   </script>
 </body>

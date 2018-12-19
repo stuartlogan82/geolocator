@@ -52,9 +52,9 @@ def dequeue():
                 .members(call_sid) \
                 .update(url='https://geolocator-prod.herokuapp.com/enqueue_to_flex'.format(call_sid, content["identity"]), method='GET',)
             print(member.call_sid)
-            return 'Dequeued succesfully!', 200
+            return jsonify({'message': 'Dequeued succesfully!'}), 200
 
-    return 'Dequeue failed', 200
+    return jsonify({'message': 'Dequeue failed'}), 200
 
 
 @app.route('/enqueue_to_flex')
