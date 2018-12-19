@@ -50,7 +50,7 @@ def dequeue():
             print("found call!!", record.call_sid)
             member = client.queues('QU0273e99cff8753d81cc9912099ad0c01') \
                 .members(call_sid) \
-                .update(url='https://{}/enqueue_to_flex'.format(SERVICE_BASE_URL), method='GET',)
+                .update(url='https://https://geolocator-prod.herokuapp.com/enqueue_to_flex', method='GET',)
             print(member.call_sid)
             return jsonify({'message': 'Dequeued succesfully!'}), 200
 
