@@ -1,0 +1,198 @@
+{
+  "description": "Geolocator Initial IVR",
+  "states": [{
+      "type": "InitialState",
+      "name": "Trigger",
+      "properties": {
+        "offset": {
+          "x": 50,
+          "y": -10
+        }
+      },
+      "transitions": [{
+          "event": "incomingMessage",
+          "conditions": [],
+          "next": null,
+          "uuid": "26adb28b-192f-4b49-b043-dd0610772eb8"
+        },
+        {
+          "event": "incomingCall",
+          "conditions": [],
+          "next": "FF1efea1bf14ef2da667dde10702511706",
+          "uuid": "4875b1e6-c547-4ab5-b50d-3138d5750dfd"
+        },
+        {
+          "event": "incomingRequest",
+          "conditions": [],
+          "next": null,
+          "uuid": "0dc78d03-ed06-4989-b6f2-9c3698d3c24f"
+        }
+      ],
+      "sid": "FF1084ec0d9297c331045ef73063440c11"
+    },
+    {
+      "type": "Gather",
+      "name": "gather_1",
+      "properties": {
+        "offset": {
+          "x": 50,
+          "y": 190
+        },
+        "timeout": 5,
+        "finish_on_key": "#",
+        "stop_gather": true,
+        "number_of_digits": null,
+        "save_response_as": null,
+        "say": "Thank you for calling roadside assistance. To help us locate you we'd like to send you a personalised link that will take you to our online geolocator. Press 1 and we'll send you a a text. Please follow the link, allow us to see your location, and press confirm",
+        "play": null,
+        "voice": "Polly.Amy",
+        "language": "en-GB",
+        "loop": 1,
+        "hints": null,
+        "gather_language": "en"
+      },
+      "transitions": [{
+          "event": "keypress",
+          "conditions": [],
+          "next": "FF3eda0b3cbe565552444da10ac4b6c3df",
+          "uuid": "dca60ed0-12ea-418b-8114-80b8fabcaf1f"
+        },
+        {
+          "event": "speech",
+          "conditions": [],
+          "next": null,
+          "uuid": "aac25cde-7876-4512-bd77-fc7ccaa88041"
+        },
+        {
+          "event": "timeout",
+          "conditions": [],
+          "next": null,
+          "uuid": "99d09161-7672-41e7-95e9-d4bde4022426"
+        }
+      ],
+      "sid": "FF1efea1bf14ef2da667dde10702511706"
+    },
+    {
+      "type": "Branch",
+      "name": "split_1",
+      "properties": {
+        "offset": {
+          "x": -40,
+          "y": 430
+        },
+        "input": "{{widgets.gather_1.Digits}}"
+      },
+      "transitions": [{
+          "event": "noMatch",
+          "conditions": [],
+          "next": null,
+          "uuid": "e04648ec-bdbd-490e-919e-20a9205722c0"
+        },
+        {
+          "event": "match",
+          "conditions": [{
+            "friendly_name": "If value equal_to 1",
+            "type": "equal_to",
+            "arguments": [
+              "{{widgets.gather_1.Digits}}"
+            ],
+            "value": "1"
+          }],
+          "next": "FF054e11664b57d5f39f8872f0059003e8",
+          "uuid": "ea736bce-42af-46ea-b247-1e6df14c25d7"
+        }
+      ],
+      "sid": "FF3eda0b3cbe565552444da10ac4b6c3df"
+    },
+    {
+      "type": "Message",
+      "name": "send_message_1",
+      "properties": {
+        "offset": {
+          "x": -70,
+          "y": 950
+        },
+        "body": "Please go to this link https://<YOUR_APP>.herokuapp.com/{{contact.channel.address | remove_first:'+'}}",
+        "from": "{{flow.channel.address}}",
+        "to": "{{contact.channel.address}}",
+        "media_url": null,
+        "service": "{{trigger.message.InstanceSid}}",
+        "channel": "{{trigger.message.ChannelSid}}",
+        "attributes": null
+      },
+      "transitions": [{
+          "event": "sent",
+          "conditions": [],
+          "next": "FFe5b368b40f3d711419bdf48a9e0fe1f1",
+          "uuid": "f5df29c4-0728-444f-9f90-d1657016f95e"
+        },
+        {
+          "event": "failed",
+          "conditions": [],
+          "next": null,
+          "uuid": "88df48f5-b95a-4057-90b0-bbefaa5c3193"
+        }
+      ],
+      "sid": "FF180bae8c6a4a0ea6cdc70ab5a77a1526"
+    },
+    {
+      "type": "EnqueueCall",
+      "name": "enqueue_1",
+      "properties": {
+        "offset": {
+          "x": -80,
+          "y": 1230
+        },
+        "workflow_sid": null,
+        "queue_name": "smsHold",
+        "priority": null,
+        "timeout": null,
+        "task_attributes": null,
+        "wait_url": null,
+        "wait_url_method": "GET"
+      },
+      "transitions": [{
+          "event": "callComplete",
+          "conditions": [],
+          "next": null,
+          "uuid": "137b1d1c-7595-43e3-8ef5-15056d2743f8"
+        },
+        {
+          "event": "failedToEnqueue",
+          "conditions": [],
+          "next": null,
+          "uuid": "6595aaa6-33d8-4e58-91ef-e33d6b543ae4"
+        },
+        {
+          "event": "callFailure",
+          "conditions": [],
+          "next": null,
+          "uuid": "9bceb2bc-f7c5-4d4a-a118-81fe63912bf3"
+        }
+      ],
+      "sid": "FFe5b368b40f3d711419bdf48a9e0fe1f1"
+    },
+    {
+      "type": "SayPlay",
+      "name": "say_play_1",
+      "properties": {
+        "offset": {
+          "x": -50,
+          "y": 710
+        },
+        "say": "Your message is on it's way. Please stay on the line. We will place you on hold until you have confirmed your location and then transfer you to an available agent",
+        "play": null,
+        "voice": "Polly.Amy",
+        "language": "en-GB",
+        "loop": 1
+      },
+      "transitions": [{
+        "event": "audioComplete",
+        "conditions": [],
+        "next": "FF180bae8c6a4a0ea6cdc70ab5a77a1526",
+        "uuid": "399a0e0e-8c5f-45c7-9aed-7cb17a8b1cf8"
+      }],
+      "sid": "FF054e11664b57d5f39f8872f0059003e8"
+    }
+  ]
+}
