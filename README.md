@@ -29,7 +29,7 @@ Twilio provides all the building blocks to handle this omni-channel interaction 
 Follow the instructions here to get up and going https://www.twilio.com/docs/flex/flex-onboarding-instructions
 
 ### Step 2: Configure IVR in Studio
-Head to https://www.twilio.com/console/studio/dashboard. Create a new flow. You can either create your own from scratch, or use [Studio Flow JSON](studioFlow.json) and paste in the contents using Import from JSON in the template options
+Head to https://www.twilio.com/console/studio/dashboard. Create a new flow. You can either create your own from scratch, or use [Studio Flow JSON](studioFlow.json) and paste in the contents using Import from JSON in the template options. Change the configuration of your Flex number to direct to this new flow, or purchase a new number. You could also modify the default Flex flow.
 
 ![Studio Flow](studio.png)
 
