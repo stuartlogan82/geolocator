@@ -25,7 +25,7 @@ Twilio provides all the building blocks to handle this omni-channel interaction 
 ![GIF of call flow](GeoLocatorGIF.gif)
 
 ## Setup
-### Step 1: Provision a Twilio Flex instance
+### Step 1: Provision a Twilio Flex Instance
 Follow the instructions here to get up and going https://www.twilio.com/docs/flex/flex-onboarding-instructions
 
 ### Step 2: Configure IVR in Studio
