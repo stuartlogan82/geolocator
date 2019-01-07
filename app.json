@@ -1,0 +1,41 @@
+{
+  "name": "Live Call Geolocator",
+  "description": "Locate your customer before they are connected to a contact center agent",
+  "repository": "https://github.com/stuartlogan82/geolocator",
+  "logo": "https://www.python.org/static/community_logos/python-logo-master-v3-TM-flattened.png",
+  "keywords": [
+    "python",
+    "twilio",
+    "flex",
+    "geolocation",
+    "contact-center",
+    "omni-channel",
+    "ivr"
+  ],
+  "env": {
+    "TWILIO_ACCOUNT_SID": {
+      "description": "Your Twilio Account SID",
+      "value": "twilio_account_sid"
+    },
+    "TWILIO_AUTH_TOKEN": {
+      "description": "Your Twilio Auth Token",
+      "value": "twilio_auth_token"
+    },
+    "TWILIO_API_KEY": {
+      "description": "Your Twilio API Key",
+      "value": "twilio_api_key"
+    },
+    "TWILIO_API_SECRET": {
+      "description": "Your Twilio API Secret",
+      "value": "twilio_api_secret"
+    },
+    "TWILIO_SYNC_SERVICE_SID": {
+      "description": "Your Twilio Sync Service ID",
+      "value": "twilio_sync_service_sid"
+    },
+    "GOOGLE_MAPS_API_KEY": {
+      "description": "Your Google Maps API Key",
+      "value": "google_maps_api_key"
+    }
+  }
+}
