@@ -13,6 +13,10 @@
     "ivr"
   ],
   "env": {
+    "APP_SETTINGS": {
+      "description": "Assuming Production values for deployment",
+      "value": "config.ProductionConfig"
+    },
     "TWILIO_ACCOUNT_SID": {
       "description": "Your Twilio Account SID",
       "value": "twilio_account_sid"
