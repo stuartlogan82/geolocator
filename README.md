@@ -1,6 +1,6 @@
 # Twilio Live Call Geolocation
 
-Sometimes in a contact centre an agent needs to know exactly where in the world a person. This is often not an easy task, especially if the person calling is in an emergency situation. What if you could send them an SMS while they're on the call and display their precise location to the agent who answers their call?
+Sometimes in a contact centre an agent needs to know exactly where in the world a person is. This is often not an easy task, especially if the person calling is in an emergency situation. What if you could send them an SMS while they're on the call and display their precise location to the agent who answers their call?
 
 Twilio provides all the building blocks to handle this omni-channel interaction and the ability to route the caller and present the information to the agent.
 
@@ -27,6 +27,11 @@ Twilio provides all the building blocks to handle this omni-channel interaction 
 ## Setup
 ### Step 1: Provision a Twilio Flex instance
 Follow the instructions here to get up and going https://www.twilio.com/docs/flex/flex-onboarding-instructions
+
+### Step 2: Configure IVR in Studio
+Head to https://www.twilio.com/console/studio/dashboard. Create a new flow. You can either create your own from scratch, or use [Studio Flow JSON](studioFlow.json) and paste in the contents using Import from JSON in the template options
+
+![Studio Flow](studio.png)
 
 ### Step 2: Deploy Server Side Application
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
