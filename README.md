@@ -33,12 +33,12 @@ Head to https://www.twilio.com/console/studio/dashboard. Create a new flow. You 
 
 ![Studio Flow](studio.png)
 
-### Step 2: Deploy Server Side Application
+### Step 3: Deploy Server Side Application
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
 Once deployed, note the URL Heroku creates for you. You can either go to your Heroku Dashboard and add ```SERVICE_BASE_URL``` with your Heroku URL or from CLI ```heroku config:set SERVICE_BASE_URL="<YOUR_HEROKU_URL>"```
 
-### Step 3: Create a Flex Plugin
+### Step 4: Create a Flex Plugin
 Follow the instructions here: https://www.twilio.com/docs/flex/tutorials/building-flex-plugins
 
 When you reach the part about adding the Bing URL, add this instead:
