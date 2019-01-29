@@ -51,7 +51,7 @@ def dequeue():
             print("found call!!", record.call_sid)
             member = client.queues('QU0273e99cff8753d81cc9912099ad0c01') \
                 .members(call_sid) \
-                .update(url=SERVICE_BASE_URL + '/enqueue_to_flex', method='GET',)
+                .update(url='https://7cc7319a.ngrok.io' + '/enqueue_to_flex', method='GET',)
             print(member.call_sid)
             return jsonify({'message': 'Dequeued succesfully!'}), 200
 

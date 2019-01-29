@@ -1,21 +1,18 @@
 function handleConfirm(e) {
-  //e.preventDefault();
   const token = fetchAccessToken(initializeSync)
-
   fetch('/dequeue', {
-    method: "POST", // *GET, POST, PUT, DELETE, etc.
-    mode: "cors", // no-cors, cors, *same-origin
-    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-    credentials: "same-origin", // include, *same-origin, omit
+    method: "POST",
+    mode: "cors",
+    cache: "no-cache",
+    credentials: "same-origin",
     headers: {
       "Content-Type": "application/json; charset=utf-8",
-      // "Content-Type": "application/x-www-form-urlencoded",
     },
-    redirect: "follow", // manual, *follow, error
-    referrer: "no-referrer", // no-referrer, *client
+    redirect: "follow",
+    referrer: "no-referrer",
     body: JSON.stringify({
-      identity: "{{identity}}"
-    }), // body data type must match "Content-Type" header
+      identity: "{{ identity }}"
+    }),
   })
     .then(response => response.json())
     .then(responseJson => {
@@ -23,7 +20,6 @@ function handleConfirm(e) {
       document.getElementById('confirm').innerHTML =
         '<p class="lead">We have your location and are putting you through to an agent, please return to the call on your phone!</p>';
     });
-
 }
 
 function fetchAccessToken(handler) {
@@ -33,8 +29,6 @@ function fetchAccessToken(handler) {
     handler(tokenResponse);
   });
 }
-
-//fetchAccessToken(initializeSync)
 
 function initializeSync(tokenResponse) {
   var syncClient = new Twilio.Sync.Client(tokenResponse.token);
